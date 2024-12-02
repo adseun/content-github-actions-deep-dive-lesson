@@ -39,6 +39,8 @@ jobs:
         run: |
             cd function
             zip -r ../${{ github.sha }}.zip .
+      - name: Debug: List files
+        run: ls -lh ..
       - name: Archive artifact
         uses: actions/upload-artifact@v3
         with:
@@ -49,18 +51,18 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: create release
+      - name: Create release
         id: create-release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.run_number }}
           release_name: Release from ${{ github.run_number }}
           body: New release for ${{ github.sha }}. Release notes on the documentation site
           draft: false
           prerelease: false
-      - name: download-artifacts
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: zipped-bundle
@@ -70,8 +72,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
           asset_path: ./${{ github.sha }}.zip
           asset_name: source_code_with_libraries.zip
           asset_content_type: application/zip
-          
