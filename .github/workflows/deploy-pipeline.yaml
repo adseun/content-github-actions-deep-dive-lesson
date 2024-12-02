@@ -39,8 +39,6 @@ jobs:
         run: |
             cd function
             zip -r ../${{ github.sha }}.zip .
-      - name: Debug: List files
-        run: ls -lh ..
       - name: Archive artifact
         uses: actions/upload-artifact@v3
         with:
