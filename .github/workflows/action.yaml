@@ -1,6 +1,6 @@
 name: Deploy my Lambda
 
-on: workflow_dispatch
+on: push
 
 jobs:
   build:
