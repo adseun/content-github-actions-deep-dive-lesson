@@ -65,7 +65,7 @@ jobs:
   test:  
     runs-on: ubuntu-latest  
     needs: upload
-    strategy:
+    # strategy:
       # matrix:
       #   input: ["Hello", "Hi"] below items have been removed as well.
     steps:  
